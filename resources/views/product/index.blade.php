@@ -6,27 +6,24 @@
 
                 <div class="table-responsive">
                     <div class="justify-content-between">
-                        <h2> Sub Category Table </h2>
+                        <h2> Product Table </h2>
                         <button class="btn btn-primary my-2">
-                            <a href="{{route('subcategory.create')}}" class="text-white m-2"> Add </a>
+                            <a href="{{route('products.create')}}" class="text-white m-2"> Add </a>
                         </button>
                     </div>
                     <table class="table table-primary">
                         <thead>
                             <tr>
-                                <th scope="col"> Sub Category Name</th>
+                                <th scope="col"> Product Name</th>
                                 <th scope="col"> Category ID </th>
+                                <th scope="col"> Sub Category ID </th>
+                                <th scope="col"> Price </th>
+                                <th scope="col"> Photo </th>
+                                <th scope="col"> Qty </th>
                                 <th scope="col"> Status </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($subcategories as $subcategory)
-                            <tr> 
-                                <td>{{ $subcategory->name}} </td>
-                                <td> {{$subcategory->cat_id}} </td>
-                                <td> {{$subcategory->status}} </td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>

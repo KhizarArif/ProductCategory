@@ -10,7 +10,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::get();
+        $categories = Category::where("status", "publish")->get();
 
         return view('category.index', compact('categories'));
     }

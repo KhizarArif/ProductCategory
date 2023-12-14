@@ -10,32 +10,30 @@ class SubCategoryController extends Controller
 {
     public function index()
     {
-        $subcategories = Subcategory::get();
-
+        $subcategories = Subcategory::where("status", "publish")->get();
         return view('subcategory.index', compact('subcategories'));
     }
 
     public function create()
     {
-        return view("subcategory.create");
+        $categories = Category::where("status", "publish")->get();
+        // dd($categories);
+        return view("subcategory.create", compact("categories"));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string',
-            'status' => 'required|in:draft,publish',
-        ]);
 
-        $category = Category::findOrFail($request->category_id);
-
+        // dd($request->all());
+        // $category = Category::find($request->cat_id);
         $subcategory = new Subcategory();
         $subcategory->name = $request->name;
         $subcategory->status = $request->status;
+        $subcategory->cat_id = $request->cat_id;
+        $subcategory->save();
+        // $category->subcategories()->save($subcategory);
 
-        $category->subcategories()->save($subcategory);
 
-        return redirect()->route("subcategory.index")->with("success", "Subcategory created successfully!");
+        return redirect()->route("subcategory.index")->with("success");
     }
 }
