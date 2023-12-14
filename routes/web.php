@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,15 +16,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
-Route::get('/category/create', [CategoryController::class, 'create'])->name('category.create');
-Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 
 
-Route::get('/subcategory/{id}', [SubCategoryController::class, 'index'])->name('subcategory.index');
-Route::get('/subcategory/create', [SubCategoryController::class, 'create'])->name('subcategory.create');
-Route::post('/subcategory/store', [SubCategoryController::class, 'store'])->name('subcategory.store');
 
-Route::get('/products', function () {
-    return view('products');
+Route::controller(CategoryController::class)->prefix('category')->group(function () {
+    Route::get('/',  'index')->name('category.index');
+    Route::get('create',  'create')->name('category.create');
+    Route::post('store',  'store')->name('category.store');
+});
+
+
+Route::controller(SubCategoryController::class)->prefix("subcategory")->group(function () {
+    Route::get('/',  'index')->name('subcategory.index');
+    Route::get('create', 'create')->name('subcategory.create');
+    Route::post('store', 'store')->name('subcategory.store');
+});
+
+Route::controller(ProductController::class)->prefix('products')->group(function () {
+    Route::get('/',  'index')->name('products.index');
+    Route::get('create',  'create')->name('products.create');
 });
