@@ -21,10 +21,8 @@
 
                             <div class="form-group">
                                 <label for="category"> Sub Categories </label>
-                                <select class="form-control" id="category" name="subcat_id">
-                                    @foreach ($subcategories as $subcategory )
-                                    <option value="{{$subcategory->id}}"> {{$subcategory->name}} </option>
-                                    @endforeach
+                                <select class="form-control" id="subcategory" name="subcat_id">
+                                    
                                 </select>
                             </div>
 
@@ -41,7 +39,7 @@
                                 <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
                             </div> -->
                             <div class="form-group">
-                                <label for="qty">Name</label>
+                                <label for="qty">Qty</label>
                                 <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
                             </div>
 
@@ -64,3 +62,34 @@
         </div>
     </div>
 </x-guests>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the category and subcategory select elements
+        var categorySelect = document.getElementById('category');
+        var subcategorySelect = document.getElementById('subcategory');
+
+        // Add an event listener to the category select element
+        categorySelect.addEventListener('change', function() {
+            // Get the selected category ID
+            var categoryId = categorySelect.value;
+
+            // Fetch subcategories based on the selected category
+            fetch(`/get-subcategories/${categoryId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Clear existing subcategories
+                    subcategorySelect.innerHTML = '<option value="">Sub Category</option>';
+
+                    // Populate subcategories based on the response
+                    data.subcategories.forEach(function(subcategory) {
+                        var option = document.createElement('option');
+                        option.value = subcategory.id;
+                        option.text = subcategory.name;
+                        subcategorySelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching subcategories:', error));
+        });
+    });
+</script>

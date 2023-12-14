@@ -10,9 +10,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-
         return view("product.index");
-        // return view("product.index");  
     }
 
     public function create()
@@ -20,5 +18,12 @@ class ProductController extends Controller
         $categories = Category::where("status", "publish")->get();
         $subcategories = Subcategory::where("status", "publish")->get();
         return view("product.create", compact("categories", "subcategories"));
+    }
+
+    public function getSubcategories($categoryId)
+    {
+        $subcategories = Subcategory::where('cat_id', $categoryId)->get();
+
+        return response()->json(['subcategories' => $subcategories]);
     }
 }

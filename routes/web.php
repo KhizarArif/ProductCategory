@@ -35,4 +35,6 @@ Route::controller(SubCategoryController::class)->prefix("subcategory")->group(fu
 Route::controller(ProductController::class)->prefix('products')->group(function () {
     Route::get('/',  'index')->name('products.index');
     Route::get('create',  'create')->name('products.create');
+    Route::get('subcategory/{categoryId}',  'getSubcategories')->name('products.subcatId');
 });
+
