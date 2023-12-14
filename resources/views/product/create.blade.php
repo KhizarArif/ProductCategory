@@ -13,15 +13,18 @@
                             <div class="form-group">
                                 <label for="category"> Categories </label>
                                 <select class="form-control" id="category" name="cat_id">
-                                    <option value=""> Category </option>
+                                    @foreach ($categories as $category )
+                                    <option value="{{$category->id}}"> {{$category->name}} </option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="category"> Sub Categories </label>
                                 <select class="form-control" id="category" name="subcat_id">
-
-                                    <option value=""> Sub Category </option>
+                                    @foreach ($subcategories as $subcategory )
+                                    <option value="{{$subcategory->id}}"> {{$subcategory->name}} </option>
+                                    @endforeach
                                 </select>
                             </div>
 
