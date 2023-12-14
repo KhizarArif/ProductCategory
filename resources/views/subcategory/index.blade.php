@@ -8,7 +8,7 @@
                     <div class="justify-content-between">
                         <h2> Sub Category Table </h2>
                         <button class="btn btn-primary my-2">
-                            <a href="{{route('category.create')}}" class="text-white m-2"> Add </a>
+                            <a href="{{route('subcategory.create')}}" class="text-white m-2"> Add </a>
                         </button>
                     </div>
                     <table class="table table-primary">

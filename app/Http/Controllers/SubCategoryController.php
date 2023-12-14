@@ -20,16 +20,22 @@ class SubCategoryController extends Controller
         return view("subcategory.create");
     }
 
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
-        $category = Category::find($id);
+        $this->validate($request, [
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required|string',
+            'status' => 'required|in:draft,publish',
+        ]);
+
+        $category = Category::findOrFail($request->category_id);
+
         $subcategory = new Subcategory();
         $subcategory->name = $request->name;
-        $subcategory->cat_id = $request->cat_id;
         $subcategory->status = $request->status;
-        $subcategory->save();
-        $category->subcategory()->save($subcategory);
 
-        return redirect()->route("subcategory.index")->with("success");
+        $category->subcategories()->save($subcategory);
+
+        return redirect()->route("subcategory.index")->with("success", "Subcategory created successfully!");
     }
 }

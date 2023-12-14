@@ -20,7 +20,7 @@ Route::get('/category/create', [CategoryController::class, 'create'])->name('cat
 Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 
 
-Route::get('/subcategory/{id}', [SubCategoryController::class, 'index'])->name('subcategory.index');
+Route::get('/subcategory', [SubCategoryController::class, 'index'])->name('subcategory.index');
 Route::get('/subcategory/create', [SubCategoryController::class, 'create'])->name('subcategory.create');
 Route::post('/subcategory/store', [SubCategoryController::class, 'store'])->name('subcategory.store');
 
