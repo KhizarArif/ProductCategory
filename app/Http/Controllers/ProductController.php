@@ -12,8 +12,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Products::get();
-        dd($products);
-        return view("product.index", compact("products"));
+        $category = Category::find($products->cat_id)->name;
+        return view("product.index", compact("products", "category"));
     }
 
     public function create()
@@ -25,10 +25,13 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // dd();
-        Products::create($request->all());
+        $abc = Products::create($request->all());
+        dd($abc);
         return redirect()->route("products.index")->with("success", "Product created Successfully!");
     }
+
+
+
 
     public function GetSubcategory(Request $request)
     {

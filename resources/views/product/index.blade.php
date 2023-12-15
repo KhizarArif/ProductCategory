@@ -7,9 +7,7 @@
                 <div class="table-responsive">
                     <div class="justify-content-between">
                         <h2> Product Table </h2>
-                        <button class="btn btn-primary my-2">
-                            <a href="{{route('products.create')}}" class="text-white m-2"> Add </a>
-                        </button>
+                        <a href="{{route('products.create')}}" class="text-white m-2"><button class="btn btn-primary my-2"> Add </button></a>
                     </div>
                     <table class="table table-primary">
                         <thead>
@@ -17,22 +15,21 @@
                                 <th scope="col"> Product Name</th>
                                 <th scope="col"> Category ID </th>
                                 <th scope="col"> Sub Category ID </th>
-                                <th scope="col"> Price </th> 
+                                <th scope="col"> Price </th>
                                 <th scope="col"> Qty </th>
                                 <th scope="col"> Status </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $product ) 
+                            @foreach ($products as $product )
                             <tr>
-                                <td> {{$product->name}}  </td>
-                                <td> {{$product->cat_id}}  </td>
-                                <td> {{$product->subcat_id}}  </td>
-                                <td> {{$product->price}}  </td>
-                                <td> {{$product->qty}}  </td>
-                                <td> {{$product->status}}  </td>
+                                <td> {{$product->name}} </td>
+                                <td> {{$category->name}} </td>
+                                <td> {{$product->subcat_id}} </td>
+                                <td> {{$product->price}} </td>
+                                <td> {{$product->qty}} </td>
+                                <td> {{$product->status}} </td>
                             </tr>
-                                
                             @endforeach
                         </tbody>
                     </table>

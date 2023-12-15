@@ -9,7 +9,6 @@
                     <div class="card-body">
                         <form method="post" action="{{ route('products.store') }}">
                             @csrf
-
                             <div class="form-group">
                                 <label for="category"> Categories </label>
                                 <select class="form-control" id="category" name="cat_id">
@@ -22,7 +21,6 @@
                             <div class="form-group">
                                 <label for="category"> Sub Categories </label>
                                 <select class="form-control" id="subcategory" name="subcat_id">
-
                                 </select>
                             </div>
 
@@ -36,10 +34,10 @@
                             </div>
                             <!-- <div class="form-group">
                                 <label for="qty">Photo</label>
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
+                                <input type="text" class="form-control" id="photo" name="photo" placeholder="Enter ">
                             </div> -->
                             <div class="form-group">
-                                <label for="qty">Qty</label>
+                                <label for="photo">Qty</label>
                                 <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
                             </div>
 
