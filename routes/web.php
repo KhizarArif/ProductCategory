@@ -16,6 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('get-subcategory', [ProductController::class, 'GetSubcategory'])->name('getsubcategory');
+
+
 Route::controller(CategoryController::class)->prefix('category')->group(function () {
     Route::get('/',  'index')->name('category.index');
     Route::get('create',  'create')->name('category.create');
@@ -31,7 +35,8 @@ Route::controller(SubCategoryController::class)->prefix("subcategory")->group(fu
 
 Route::controller(ProductController::class)->prefix('products')->group(function () {
     Route::get('/',  'index')->name('products.index');
-    Route::get('create',  'create')->name('products.create');
-    Route::get('getcategory/{categoryId}',  'getSubcategories')->name('products.subcatId');
+    Route::get('create',  'create')->name('products.create'); 
+    Route::post('store',  'store')->name('products.store'); 
 });
+
 

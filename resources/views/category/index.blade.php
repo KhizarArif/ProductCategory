@@ -7,9 +7,7 @@
                 <div class="table-responsive">
                     <div class="justify-content-between">
                         <h2> Category Table </h2>
-                        <button class="btn btn-primary my-2">
-                            <a href="{{route('category.create')}}" class="text-white m-2"> Add </a>
-                        </button>
+                        <a href="{{route('category.create')}}" class="text-white m-2"><button class="btn btn-primary my-2"> Add </button> </a>
                     </div>
                     <table class="table table-primary">
                         <thead>
