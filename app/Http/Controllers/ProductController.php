@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Products;
+use App\Models\Product;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
@@ -11,8 +11,18 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Products::get();
-        $category = Category::find($products->cat_id)->name;
+        // $products = Product::get();
+        // $category = Category::find($products->cat_id)->name;
+        // return view("product.index", compact("products", "category"));
+
+        $products = Product::with('productImages')->get(); 
+        $categoryNames = [];
+    
+        foreach ($products as $product) { 
+            $category = Category::find($product->cat_id); 
+            $categoryNames[$product->id] = $category ? $category->name : 'Uncategorized';
+        }
+
         return view("product.index", compact("products", "category"));
     }
 
@@ -25,13 +35,16 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $abc = Products::create($request->all());
-        dd($abc);
+        $product = Product::create($request->except('image'));
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('images', 'public');
+            $product->productImages()->create([
+                'image' => $imagePath,
+                'src' => asset('storage/' . $imagePath),
+            ]);
+        }
         return redirect()->route("products.index")->with("success", "Product created Successfully!");
     }
-
-
-
 
     public function GetSubcategory(Request $request)
     {
