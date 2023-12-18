@@ -6,14 +6,21 @@
                     <div class="card-header bg-primary text-white text-center border-rounded">
                         <h4 class="mb-0">Product Form</h4>
                     </div>
+                    @if ($message = Session::get('success'))
+                        <div class="alert alert-success alert-block">
+                            <strong>{{ $message }}</strong>
+                        </div>
+
+                        <img src="{{ asset('images/' . Session::get('image')) }}" />
+                    @endif
                     <div class="card-body">
-                        <form method="post" action="{{ route('products.store') }}">
+                        <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="category"> Categories </label>
                                 <select class="form-control" id="category" name="cat_id">
                                     @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"> {{ $category->name }} </option>
+                                        <option value="{{ $category->id }}"> {{ $category->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -26,29 +33,33 @@
 
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Category Name">
+                                <input type="text" class="form-control" id="name" name="name"
+                                    placeholder="Enter Category Name">
                             </div>
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price">
+                                <input type="text" class="form-control" id="price" name="price"
+                                    placeholder="Enter Price">
                             </div>
-                            <!-- <div class="form-group">
-                                <label for="qty">Photo</label>
-                                <input type="text" class="form-control" id="photo" name="photo" placeholder="Enter ">
-                            </div> -->
                             <div class="form-group">
-                                <label for="photo">Qty</label>
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
+                                <label for="qty">Qty</label>
+                                <input type="text" class="form-control" id="qty" name="qty"
+                                    placeholder="Enter Quantity">
                             </div>
-
+                            <div class="form-group">
+                                <label for="image"> Image </label>
+                                <input type="file" class="form-control" id="image" name="image">
+                            </div>
                             <div class="form-group">
                                 <label>Status</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="draft" value="draft">
+                                    <input class="form-check-input" type="radio" name="status" id="draft"
+                                        value="draft">
                                     <label class="form-check-label" for="draft">Draft</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="publish" value="publish">
+                                    <input class="form-check-input" type="radio" name="status" id="publish"
+                                        value="publish">
                                     <label class="form-check-label" for="publish">Publish</label>
                                 </div>
                             </div>
@@ -73,7 +84,7 @@
                 data: {
                     'id': categoryId
                 },
-                url: "{{route('getsubcategory')}}",
+                url: "{{ route('getsubcategory') }}",
                 success: function(data) {
                     subcategorySelect.empty();
                     console.log(data);
