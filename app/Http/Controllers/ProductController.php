@@ -15,12 +15,12 @@ class ProductController extends Controller
         // $category = Category::find($products->cat_id)->name;
         // return view("product.index", compact("products", "category"));
 
-        $products = Product::with('productImages')->get(); 
+        $products = Product::with('productImages')->get();
         $categoryNames = [];
-    
-        foreach ($products as $product) { 
-            $category = Category::find($product->cat_id); 
-            $categoryNames[$product->id] = $category ? $category->name : 'Uncategorized';
+
+        foreach ($products as $product) {
+            $category = Category::find($product->cat_id);
+            $categoryNames[$product->id] = $category ?? $category->name;
         }
 
         return view("product.index", compact("products", "category"));
@@ -39,8 +39,8 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
             $product->productImages()->create([
-                'image' => $imagePath,
-                'src' => asset('storage/' . $imagePath),
+                'name' => $imagePath,
+                'path' => asset('storage/' . $imagePath),
             ]);
         }
         return redirect()->route("products.index")->with("success", "Product created Successfully!");

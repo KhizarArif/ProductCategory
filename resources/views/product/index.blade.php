@@ -7,10 +7,9 @@
                 <div class="table-responsive">
                     <div class="justify-content-between">
                         <h2> Product Table </h2>
-                        <a href="{{ route('products.create') }}" class="text-white m-2"><button
-                                class="btn btn-primary my-2"> Add </button></a>
+                        <a href="{{ route('products.create') }}" class="text-white m-2"><button class="btn btn-primary my-2"> Add </button></a>
                     </div>
-                    <table class="table table-primary">
+                    <table class="table table-primary ">
                         <thead>
                             <tr>
                                 <th scope="col"> Product Name</th>
@@ -24,24 +23,25 @@
                         </thead>
                         <tbody>
                             @foreach ($products as $product)
-                                <tr>
-                                    <td> {{ $product->name }} </td>
-                                    <td> {{ $category->name }} </td>
-                                    <td> {{ $product->subcat_id }} </td>
-                                    <td> {{ $product->price }} </td>
-                                    <td> {{ $product->qty }} </td>
-                                    <td> {{ $product->status }} </td>
-                                    <td>
+                            <tr>
+                                <td> {{ $product->name }} </td>
+                                <td> {{ $category->name }} </td>
+                                <td> {{ $product->subcat_id }} </td>
+                                <td> {{ $product->price }} </td>
+                                <td> {{ $product->qty }} </td>
+                                <td> {{ $product->status }} </td>
+                                <td>
 
+                                    <div class="w-100 d-inline-block overflow-hidden " style="height: 100px;">
                                         @if ($product->productImages->isNotEmpty())
-                                            <p>
-                                                <img src="{{ $product->productImages->first()->src }}"
-                                                    alt="Product Image">
-                                            </p>
+                                        <p>
+                                            <img src="{{ $product->productImages->first()->path }}" alt="Product Image">
+                                        </p>
                                         @endif
 
-                                    </td>
-                                </tr>
+                                    </div>
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -53,4 +53,4 @@
 </x-guests>
 
 
-{{--   --}}
+{{-- --}}
