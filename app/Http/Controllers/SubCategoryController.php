@@ -23,6 +23,9 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            "name" => 'required|unique:subcategories|max:255'
+        ]);
 
         // dd($request->all());
         // $category = Category::find($request->cat_id);

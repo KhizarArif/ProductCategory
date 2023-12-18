@@ -6,12 +6,22 @@
                     <div class="card-header bg-primary text-white text-center border-rounded">
                         <h4 class="mb-0">Product Form</h4>
                     </div>
+                    @if ($errors ->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li> {{$error}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                     <div class="card-body">
                         <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="category"> Categories </label>
                                 <select class="form-control" id="category" name="cat_id">
+                                    <option value="" disabled selected>Select Category...</option>
                                     @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"> {{ $category->name }} </option>
                                     @endforeach
@@ -20,34 +30,35 @@
 
                             <div class="form-group">
                                 <label for="category"> Sub Categories </label>
-                                <select class="form-control" id="subcategory" name="subcat_id">
+                                <select class="form-control" id="subcategory" name="subcat_id" value="{{old('subcategory')}}">
+                                    <option value="" disabled selected>Select Subcategory...</option>
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Category Name">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Category Name" value="{{old('name')}}">
                             </div>
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price">
+                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price" value="{{old('price')}}">
                             </div>
                             <div class="form-group">
                                 <label for="qty">Qty</label>
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity">
+                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity" value="{{old('qty')}}">
                             </div>
                             <div class="form-group">
                                 <label for="image"> Image </label>
-                                <input type="file" class="form-control" id="image" name="image">
+                                <input type="file" class="form-control" id="image" name="image" value="{{old('image')}}">
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="draft" value="draft">
+                                    <input class="form-check-input" type="radio" name="status" id="draft" value="draft" value="{{old('draft')}}">
                                     <label class="form-check-label" for="draft">Draft</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="publish" value="publish">
+                                    <input class="form-check-input" type="radio" name="status" id="publish" value="publish" value="{{old('publish')}}">
                                     <label class="form-check-label" for="publish">Publish</label>
                                 </div>
                             </div>
@@ -67,6 +78,7 @@
             var categoryId = $(this).val();
             var subcategorySelect = $('#subcategory');
             console.log(categoryId);
+            subcategorySelect.prop('disabled', false);
             $.ajax({
                 type: "GET",
                 data: {
@@ -75,7 +87,7 @@
                 url: "{{ route('getsubcategory') }}",
                 success: function(data) {
                     subcategorySelect.empty();
-                    console.log(data);
+                    subcategorySelect.append('<option value="" disabled selected>Select Subcategory...</option>');
                     $.each(data, function(index, subcategory) {
                         subcategorySelect.append($('<option>', {
                             value: subcategory.id,

@@ -35,13 +35,16 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([ 
+            "name" => 'required|unique:products|max:255'
+        ]);
         $product = Product::create($request->except('image'));
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
             $product->productImages()->create([
                 'name' => $imagePath,
                 'path' => asset('storage/' . $imagePath),
-            ]);
+            ]); 
         }
         return redirect()->route("products.index")->with("success", "Product created Successfully!");
     }
