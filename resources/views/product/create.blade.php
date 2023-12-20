@@ -6,17 +6,8 @@
                     <div class="card-header bg-primary text-white text-center border-rounded">
                         <h4 class="mb-0">Product Form</h4>
                     </div>
-                    @if ($errors ->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li> {{$error}}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
                     <div class="card-body">
-                        <form method="post" action="{{ route('products.store') }}" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('products.store') }}" id="submitForm" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="category"> Categories </label>
@@ -37,8 +28,11 @@
 
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Category Name" value="{{old('name')}}">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Enter Category Name" value="{{old('name')}}">
                             </div>
+                            @error('name')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
                             <div class="form-group">
                                 <label for="price">Price</label>
                                 <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price" value="{{old('price')}}">
@@ -48,8 +42,8 @@
                                 <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity" value="{{old('qty')}}">
                             </div>
                             <div class="form-group">
-                                <label for="image"> Image </label>
-                                <input type="file" class="form-control" id="image" name="image" value="{{old('image')}}">
+                                <label for="inputFileMultiple"> Image </label>
+                                <input type="file" class="form-control" id="inputFileMultiple" name="files[]" multiple>
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
@@ -62,7 +56,7 @@
                                     <label class="form-check-label" for="publish">Publish</label>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="submitProduct">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -71,13 +65,15 @@
     </div>
 </x-guests>
 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
         $('#category').change(function() {
             var categoryId = $(this).val();
-            var subcategorySelect = $('#subcategory');
             console.log(categoryId);
+            var subcategorySelect = $('#subcategory');
             subcategorySelect.prop('disabled', false);
             $.ajax({
                 type: "GET",
@@ -100,5 +96,30 @@
                 }
             })
         })
+
+        $('#submitProduct').on('click', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "post",
+                url: "{{route('products.store')}}",
+                data: $('#submitForm').serialize(),
+                success: function(data) {
+                console.log(data);
+                    // window.location.href = "{{route('products.index')}}"
+                },
+                error: function(data) {
+                    alert("Error!")
+                }
+            })
+        })
     })
 </script>
+
+<!-- 
+<script>
+    $(document).ready(function() {
+       
+    })
+</script> -->
+
+<!--  -->

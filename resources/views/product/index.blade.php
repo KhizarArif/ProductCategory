@@ -23,6 +23,7 @@
                         </thead>
                         <tbody>
                             @foreach ($products as $product)
+             
                             <tr>
                                 <td> {{ $product->name }} </td>
                                 <td> {{ $category->name }} </td>
