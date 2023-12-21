@@ -33,11 +33,13 @@
                                 <td> {{ $product->qty }} </td>
                                 <td> {{ $product->status }} </td>
                                 <td>
-                                    <div class="w-100 d-inline-block overflow-hidden " style="height: 100px;">
+                                    <div class="w-50 d-flex rounded-circle" style="height: 40px;">
+
                                         @if ($product->productImages->isNotEmpty())
-                                        @foreach ($product->productImages as $productImg ) 
-                                            <img src="{{asset ('storage/' . $productImg->path) }}" alt="Product Image">
-                                        @endforeach
+                                            @foreach ($product->productImages as $productImg )
+                                            <!-- {{$productImg->path}} -->
+                                            <img class="w-100 h-100 rounded-circle" src="{{asset ('storage/' . $productImg->path) }}" alt="Product Image"> 
+                                            @endforeach
                                         @endif
 
                                     </div>
