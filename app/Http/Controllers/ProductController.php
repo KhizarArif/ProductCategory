@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::where("status", "publish")->with('productImages', 'category')->get();
+        $products = Product::where("status", "publish")->with('productImages', 'category', 'subcategory')->get();
         return view("product.index", compact("products"));
     }
 

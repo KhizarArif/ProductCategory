@@ -28,7 +28,7 @@
                                 <td>
                                     {{$product->category->name}}
                                 </td>
-                                <td> {{ $product->subcat_id }} </td>
+                                <td> {{ $product->subcategory ->name }} </td>
                                 <td> {{ $product->price }} </td>
                                 <td> {{ $product->qty }} </td>
                                 <td> {{ $product->status }} </td>
