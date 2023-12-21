@@ -23,21 +23,21 @@
                         </thead>
                         <tbody>
                             @foreach ($products as $product)
-             
                             <tr>
                                 <td> {{ $product->name }} </td>
-                                <td> {{ $category->name }} </td>
+                                <td>
+                                    {{$product->category->name}}
+                                </td>
                                 <td> {{ $product->subcat_id }} </td>
                                 <td> {{ $product->price }} </td>
                                 <td> {{ $product->qty }} </td>
                                 <td> {{ $product->status }} </td>
                                 <td>
-
                                     <div class="w-100 d-inline-block overflow-hidden " style="height: 100px;">
                                         @if ($product->productImages->isNotEmpty())
-                                        <p>
-                                            <img src="{{ $product->productImages->first()->path }}" alt="Product Image">
-                                        </p>
+                                        @foreach ($product->productImages as $productImg ) 
+                                            <img src="{{asset ('storage/' . $productImg->path) }}" alt="Product Image">
+                                        @endforeach
                                         @endif
 
                                     </div>

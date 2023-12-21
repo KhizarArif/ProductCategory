@@ -12,8 +12,12 @@ class ProductImage extends Model
 
     protected $guarded = [];
 
-    public function productImages(): BelongsTo
+    public function products(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'products_id', 'id');
+    }
+    public function getFullPathAttribute(): string
+    {
+        return asset('storage/' . $this->path);
     }
 }

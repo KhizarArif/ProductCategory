@@ -7,7 +7,7 @@
                         <h4 class="mb-0">Product Form</h4>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('products.store') }}" id="submitForm" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('products.store') }}" class="form" id="submitForm" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="category"> Categories </label>
@@ -43,7 +43,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputFileMultiple"> Image </label>
-                                <input type="file" class="form-control" id="inputFileMultiple" name="files[]" multiple>
+                                <input type="file" class="form-control" id="inputFileMultiple" name="files[]" required accept="image/*" multiple>
                             </div>
                             <div class="form-group">
                                 <label>Status</label>
@@ -70,6 +70,28 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('.form').on('submit',function(event) {
+            
+            event.preventDefault(); 
+            const form = $(this);
+            const actionUrl = form.attr('action');
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: new FormData(form[0]),
+                contentType: false,
+                processData: false,
+                success: function(data) { 
+                    console.log(data +  "Data ");
+                    window.location.href = "{{route('products.index')}}"
+                },
+                error: function(error) { 
+                    alert(error);       
+                }
+            })
+        })
+    });
+
         $('#category').change(function() {
             var categoryId = $(this).val();
             console.log(categoryId);
@@ -92,34 +114,12 @@
                     })
                 },
                 error: function(error) {
+                    alert(error);
                     console.error('Error fetching subcategories:', error);
                 }
             })
-        })
+        });
 
-        $('#submitProduct').on('click', function(event) {
-            event.preventDefault();
-            $.ajax({
-                type: "post",
-                url: "{{route('products.store')}}",
-                data: $('#submitForm').serialize(),
-                success: function(data) {
-                console.log(data);
-                    // window.location.href = "{{route('products.index')}}"
-                },
-                error: function(data) {
-                    alert("Error!")
-                }
-            })
-        })
-    })
-</script>
-
-<!-- 
-<script>
-    $(document).ready(function() {
        
-    })
-</script> -->
-
-<!--  -->
+</script>
+ 

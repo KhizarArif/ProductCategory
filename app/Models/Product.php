@@ -12,6 +12,9 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $casts = [
+        'files' => "array"
+    ];
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, "cat_id", 'id');

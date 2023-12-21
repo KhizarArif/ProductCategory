@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
@@ -11,19 +12,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        // $products = Product::get();
-        // $category = Category::find($products->cat_id)->name;
-        // return view("product.index", compact("products", "category"));
-
-        $products = Product::with('productImages')->get();
-        $categoryNames = [];
-
-        foreach ($products as $product) {
-            $category = Category::find($product->cat_id);
-            $categoryNames[$product->id] = $category ?? $category->name;
-        }
-
-        return view("product.index", compact("products", "category"));
+        $products = Product::where("status", "publish")->with('productImages', 'category')->get();
+        return view("product.index", compact("products"));
     }
 
     public function create()
@@ -35,28 +25,33 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        dd($request);
         $request->validate([
-            "name" => 'required|unique:products|max:255'
+            "name" => 'required|unique:products|max:255',
+            "price" => "required",
+            "qty" => "required",
         ]);
-        $product = Product::create();
-
-        if ($request->hasFile('files')) {
-            $files = $request->file('files');
-            foreach ($files as $key => $file) {
-                $imageName = time() . '.' . $file->extension();
-                $imagePath = $file->store('images', 'public');
-                if ($file->isValid()) {
-                    $product->productImages()->create([
-                        'name' => $imageName,
-                        'path' => $imagePath
-                    ]);
-                }
-            }
+        $product = new Product();
+        $product->name = $request->name;
+        $product->cat_id = $request->cat_id;
+        $product->subcat_id = $request->subcat_id;
+        $product->price  = $request->price;
+        $product->qty  = $request->qty;
+        $product->status  = $request->status;
+        $product->save();
+        $files = $request->file('files');
+        foreach ($files as $file) {
+            $destinationPath = storage_path("app\public\upload");
+            $extension = $file->getClientOriginalExtension();
+            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+            $fileName = $originalName . '-' . uniqid() . "." . $extension;
+            $file->move($destinationPath, $fileName);
+            ProductImage::create([
+                "name" => $fileName,
+                "path" => "upload" . "/" . $fileName, 
+                "products_id" => $product->id,
+            ]);
         }
-        dd($product);
-        // return redirect()->route("products.index")->with("success", "Product created Successfully!");
-        return $product;
+        return redirect()->back()->with('message', 'File uploaded.');
     }
 
     public function GetSubcategory(Request $request)
@@ -75,3 +70,21 @@ class ProductController extends Controller
 //     'name' => $request->name,
 //     'path' => $imagePath,
 // ]); 
+
+
+
+// $files = $request->file('files');
+//             foreach ($files as $key => $file) {
+//                 if($file->isValid()) {
+//                     $destinationPath = storage_path('uploads');
+//                     $extension       = $file->getClientOriginalExtension();
+//                     $originalName    = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+//                     $fileName        = $originalName . '-' . uniqid() . '.' . $extension;
+//                     $file->move($destinationPath, $fileName);
+//                     ProductImage::create([
+//                         "name" => $fileName ,
+//                         "path" => "uploads" . "/" . $fileName,
+//                         "products_id" => $product->id
+//                     ]);
+//                 }
+//             }

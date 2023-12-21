@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('status', ['draft', 'publish'])->default('draft');
             $table->integer('price');
             $table->integer('qty');
-            $table->string('photo')->nullable();
+            $table->json('files')->nullable();
             $table->foreign('cat_id')->references('id')->on('categories');
             $table->foreign('subcat_id')->references('id')->on('subcategories');
             $table->timestamps();
