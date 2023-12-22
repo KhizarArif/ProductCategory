@@ -20,4 +20,19 @@ class ProductImage extends Model
     {
         return asset('storage/' . $this->path);
     }
+
+    public function updateImage($file)
+    {
+        $destinationPath = storage_path("app/public/upload");
+        $extension = $file->getClientOriginalExtension();
+        $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $fileName = $originalName . '-' . uniqid() . "." . $extension;
+        $file->move($destinationPath, $fileName);
+
+        $this->update([
+            'name' => $fileName,
+            'path' => "upload" . "/" . $fileName,
+        ]);
+    }
+    
 }

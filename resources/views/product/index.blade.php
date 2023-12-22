@@ -19,6 +19,7 @@
                                 <th scope="col"> Qty </th>
                                 <th scope="col"> Status </th>
                                 <th scope="col"> Photo </th>
+                                <th scope="col"> Action </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,13 +37,16 @@
                                     <div class="w-50 d-flex rounded-circle" style="height: 40px;">
 
                                         @if ($product->productImages->isNotEmpty())
-                                            @foreach ($product->productImages as $productImg )
-                                            <!-- {{$productImg->path}} -->
-                                            <img class="w-100 h-100 rounded-circle" src="{{asset ('storage/' . $productImg->path) }}" alt="Product Image"> 
-                                            @endforeach
+                                        @foreach ($product->productImages as $productImg )
+                                        <!-- {{$productImg->path}} -->
+                                        <img class="w-100 h-100 rounded-circle" src="{{asset ('storage/' . $productImg->path) }}" alt="Product Image">
+                                        @endforeach
                                         @endif
 
                                     </div>
+                                </td>
+                                <td>
+                                    <a href="{{route('products.edit', $product->id)}}"> <button class="btn btn-primary"> Edit </button> </a>
                                 </td>
                             </tr>
                             @endforeach
@@ -55,5 +59,4 @@
     </div>
 </x-guests>
 
-
-{{-- --}}
+ 
