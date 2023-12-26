@@ -28,10 +28,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="inputFileMultiple"> Image </label>
+
                                 @foreach ($product->productImages as $productImg)
                                 <div class="image-item" data-id="{{ $productImg->id }}">
-                                    <input type="file" class="form-control" data-image-id="{{ $productImg->id }}" accept="image/*" style="display: none;">
-                                    <img src="{{ asset('storage/' . $productImg->path) }}" alt="Product Image" name="image" data-id="{{ $productImg->id }}" class="product-image">
+                                    <input type="file" class="form-control" name="files[]" id="{{ $productImg->id }}" accept="image/*" style="display: none;">
+                                    <img src="{{ asset('storage/' . $productImg->path) }}" alt="Product Image" name="image" id="{{ $productImg->id }}" class="product-image" value="{{$productImg->id}}">
                                     <label class="btn btn-primary change-image-btn">Change Image</label>
                                 </div>
                                 @endforeach
@@ -59,19 +60,22 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var imageItem = document.querySelectorAll('.image-item')
+
             imageItem.forEach(item => {
                 item.addEventListener('click', function() {
                     var imageId = this.dataset.id;
-                    var input = document.querySelector(`input[data-image-id="${imageId}"]`);
+                    console.log(imageId);
+                    var input = document.querySelector(`input[id="${imageId}"]`); 
                     input.click();
 
+                    
                     input.addEventListener('change', function() {
                         const file = this.files[0];
-
                         if (file) {
-                            const reader = new FileReader(); 
+                            const reader = new FileReader();
                             reader.onload = function(e) {
-                                var imgElemt = document.querySelector(`img[data-id = "${imageId}"]`);
+
+                                var imgElemt = document.querySelector(`img[id = "${imageId}"]`);
                                 if (imgElemt) {
                                     imgElemt.src = e.target.result;
                                 }

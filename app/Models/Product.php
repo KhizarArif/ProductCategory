@@ -11,7 +11,12 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable =[
+        "name",
+        "price",
+        "qty",
+        "status"
+    ];
     protected $casts = [
         'files' => "array"
     ];

@@ -18,8 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('subcat_id');
             $table->enum('status', ['draft', 'publish'])->default('draft');
             $table->integer('price');
-            $table->integer('qty');
-            $table->json('files')->nullable();
+            $table->integer('qty'); 
             $table->foreign('cat_id')->references('id')->on('categories');
             $table->foreign('subcat_id')->references('id')->on('subcategories');
             $table->timestamps();

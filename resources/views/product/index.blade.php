@@ -22,7 +22,7 @@
                                 <th scope="col"> Action </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody> 
                             @foreach ($products as $product)
                             <tr>
                                 <td> {{ $product->name }} </td>

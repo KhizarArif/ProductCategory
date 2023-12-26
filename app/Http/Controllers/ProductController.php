@@ -62,29 +62,33 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        $product = Product::with('productImages')->find($id);
+        $product = Product::with('productImages')->find($id); 
         return view('product.edit', compact("product"));
     }
 
     public function update(Request $request, $id)
-    {
+    {    
+        dd($request);
         $product = Product::find($id);
+        dd($product->productImages->first()->id);
         $product->name = $request->name;
         $product->price = $request->price;
         $product->qty = $request->qty;
         $product->status = $request->status;
         $product->save();
 
-        if ($request->hasFile("image")) {
-            $file = $request->file("image");
-            $destinationPath = storage_path("app\public\upload");
-            $extension = $file->getClientOriginalExtension();
-            $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $fileName = $originalName . '-' . uniqid() . "." . $extension;
-            $file->move($destinationPath, $fileName);
-        }
+            if ($request->hasFile("files")) {
+                $files = $request->file("files"); 
+                foreach ($files as $file) {
+                    $destinationPath = storage_path("app\public\upload");
+                    $extension = $file->getClientOriginalExtension();
+                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                    $fileName = $originalName . '-' . uniqid() . "." . $extension;
+                    $file->move($destinationPath, $fileName); 
+                }
+            }
 
-        return view('product.index')->with('message', 'Updated Successfully!');
+        return redirect()->route('products.index')->with('message', 'Updated Successfully!');
     }
 }
 
