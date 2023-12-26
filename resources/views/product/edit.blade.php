@@ -33,6 +33,7 @@
                                 <div class="image-item" data-id="{{ $productImg->id }}">
                                     <input type="file" class="form-control" name="files[]" id="{{ $productImg->id }}" accept="image/*" style="display: none;">
                                     <img src="{{ asset('storage/' . $productImg->path) }}" alt="Product Image" name="image" id="{{ $productImg->id }}" class="product-image" value="{{$productImg->id}}">
+                                    <input type="text" name="image_ids[]" value="{{ $productImg->id }}">
                                     <label class="btn btn-primary change-image-btn">Change Image</label>
                                 </div>
                                 @endforeach

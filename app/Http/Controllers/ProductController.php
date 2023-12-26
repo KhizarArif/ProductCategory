@@ -62,59 +62,41 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        $product = Product::with('productImages')->find($id); 
+        $product = Product::with('productImages')->find($id);
         return view('product.edit', compact("product"));
     }
 
     public function update(Request $request, $id)
-    {    
-        dd($request);
+    {
         $product = Product::find($id);
-        dd($product->productImages->first()->id);
         $product->name = $request->name;
         $product->price = $request->price;
         $product->qty = $request->qty;
         $product->status = $request->status;
         $product->save();
 
-            if ($request->hasFile("files")) {
-                $files = $request->file("files"); 
-                foreach ($files as $file) {
-                    $destinationPath = storage_path("app\public\upload");
-                    $extension = $file->getClientOriginalExtension();
-                    $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                    $fileName = $originalName . '-' . uniqid() . "." . $extension;
-                    $file->move($destinationPath, $fileName); 
+        if ($request->hasFile("files")) {
+            $files = $request->file("files");
+            $imageIds = $request->image_ids;
+            foreach ($files as $file) {
+                $destinationPath = storage_path("app\public\upload");
+                $extension = $file->getClientOriginalExtension();
+                $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $fileName = $originalName . '-' . uniqid() . "." . $extension;
+                $file->move($destinationPath, $fileName);
+
+                if (isset($imageIds)) {
+                    foreach ($imageIds as $imageId) {
+                        $productImage = ProductImage::find($imageId);
+                        $productImage->update([
+                            "name" => $fileName,
+                            "path" => "upload" . "/" . $fileName,
+                        ]);
+                    }
                 }
             }
+        }
 
         return redirect()->route('products.index')->with('message', 'Updated Successfully!');
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-// public function update(Request $request, $id)
-// { 
-//     // Validate the request
-//     dd($request);
-//     $request->validate([
-//         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     // Get the image file from the request
-//     $imageFile = $request->file('image');
-
-//     $productImage = ProductImage::findOrFail($id);
-//     $productImage->updateImage($imageFile);
-
-//     // return response()->json(['message' => 'Image updated successfully']);
-// }
