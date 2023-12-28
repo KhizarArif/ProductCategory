@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    {{ $slot }}
 </body>
-{{ $slot }}
+
 </html>

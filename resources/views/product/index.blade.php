@@ -9,7 +9,7 @@
                         <h2> Product Table </h2>
                         <a href="{{ route('products.create') }}" class="text-white m-2"><button class="btn btn-primary my-2"> Add </button></a>
                     </div>
-                    <table class="table table-primary ">
+                    <table class="table table-primary" id="product_table">
                         <thead>
                             <tr>
                                 <th scope="col"> Product Name</th>
@@ -22,7 +22,7 @@
                                 <th scope="col"> Action </th>
                             </tr>
                         </thead>
-                        <tbody> 
+                        <tbody>
                             @foreach ($products as $product)
                             <tr>
                                 <td> {{ $product->name }} </td>
@@ -52,11 +52,14 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    <div class="row">
+                        {{$products->links()}}
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
-</x-guests>
 
- 
+</x-guests>

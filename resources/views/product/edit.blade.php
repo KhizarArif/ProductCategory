@@ -31,7 +31,7 @@
 
                                 @foreach ($product->productImages as $productImg)
                                 <div class="image-item" data-id="{{ $productImg->id }}">
-                                    <input type="file" class="form-control" name="files[]" id="{{ $productImg->id }}" accept="image/*" style="display: none;">
+                                    <input type="file" class="form-control" name="files[{{ $productImg->id }}]" id="{{ $productImg->id }}" accept="image/*" style="display: none;">
                                     <img src="{{ asset('storage/' . $productImg->path) }}" alt="Product Image" name="image" id="{{ $productImg->id }}" class="product-image" value="{{$productImg->id}}">
                                     <label class="btn btn-primary change-image-btn">Change Image</label>
                                 </div>
@@ -41,11 +41,11 @@
                             <div class="form-group">
                                 <label>Status</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="draft" value="{{$product->status}}">
+                                    <input class="form-check-input" type="radio" name="status" id="draft" value="draft" {{ $product->status === 'draft' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="draft">Draft</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="status" id="publish" value="{{$product->status}}">
+                                    <input class="form-check-input" type="radio" name="status" id="publish" value="publish" {{ $product->status === 'publish' ? 'checked' : '' }}>
                                     <label class="form-check-label" for="publish">Publish</label>
                                 </div>
                             </div>
@@ -65,10 +65,10 @@
                 item.addEventListener('click', function() {
                     var imageId = this.dataset.id;
                     console.log(imageId);
-                    var input = document.querySelector(`input[id="${imageId}"]`); 
+                    var input = document.querySelector(`input[id="${imageId}"]`);
                     input.click();
 
-                    
+
                     input.addEventListener('change', function() {
                         const file = this.files[0];
                         if (file) {

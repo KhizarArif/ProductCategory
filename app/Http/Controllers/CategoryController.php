@@ -22,10 +22,7 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // $request->validate([ 
-        //     "name" => 'required|unique:categories|max:255'
-        // ]);
+    { 
         Validator::make($request->all(), [
             "name" => 'required|unique:categories|max:255'
         ]);
