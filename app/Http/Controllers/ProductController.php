@@ -67,16 +67,14 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id)
-    {    
-        dd($request);
-        $product = Product::find($id);
-        dd($product->productImages->first()->id);
+    {     
+        $product = Product::find($id); 
         $product->name = $request->name;
         $product->price = $request->price;
         $product->qty = $request->qty;
-        $product->status = $request->status;
+        $product->status = $request->status; 
         $product->save();
-
+        
             if ($request->hasFile("files")) {
                 $files = $request->file("files"); 
                 foreach ($files as $file) {
