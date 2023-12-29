@@ -1,17 +1,23 @@
 <x-guests>
 
 
-    <div class="d-flex justify-content-center" id="spinner">
-        <button class="btn btn-primary d-none" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Loading...
-        </button>
-    </div>
-
 
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
+                <!-- @if (count($errors) > 0)
+                    @foreach ($errors->all() as $error)
+                    <p class="alert alert-danger">{{ $error }}</p>
+                    @endforeach
+                @endif -->
+
+
+
+                @if(session('message'))
+                <div class="alert alert-success">
+                    {{ session('message') }}
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-header bg-primary text-white text-center border-rounded">
                         <h4 class="mb-0">Product Form</h4>
@@ -40,17 +46,17 @@
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Enter Category Name" value="{{old('name')}}">
                             </div>
-                            @error('name')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
+                            <span class="text-danger" id="name_error"></span> 
                             <div class="form-group">
                                 <label for="price">Price</label>
-                                <input type="text" class="form-control" id="price" name="price" placeholder="Enter Price" value="{{old('price')}}">
+                                <input type="text" class="form-control @error('price') is-invalid @enderror" id="price" name="price" placeholder="Enter Price" value="{{old('price')}}">
                             </div>
+                            <span class="text-danger" id="price_error"></span> 
                             <div class="form-group">
                                 <label for="qty">Qty</label>
-                                <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Quantity" value="{{old('qty')}}">
+                                <input type="text" class="form-control @error('qty') is-invalid @enderror" id="qty" name="qty" placeholder="Enter Quantity" value="{{old('qty')}}">
                             </div>
+                            <span class="text-danger" id="qty_error"></span> 
                             <div class="form-group">
                                 <label for="inputFileMultiple"> Image </label>
                                 <input type="file" class="form-control" id="inputFileMultiple" name="files[]" required accept="image/*" multiple>
@@ -79,18 +85,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        $("#spinner").css("display", "block");
-        // $("#spinner").show();
-
-        $(".container").hide();
-
-
-        setTimeout(() => {
-            // $("#spinner").css("display", "none");
-            $("#spinner").hide();
-            $(".container").show();
-        }, 2000);
-
 
         $('.form').on('submit', function(event) {
 
@@ -107,14 +101,15 @@
                 processData: false,
                 success: function(data) {
                     console.log(data + "Data ");
-                    //    $("#spinner").css("display", "none");
-                    $("#spinner").hide();
                     window.location.href = "{{route('products.index')}}"
                 },
-                error: function(error) {
-                    //    $("#spinner").css("display", "none");
-                    $("#spinner").hide();
-                    alert(error);
+                error: function(error) { 
+                    if (error.status === 422) {
+                        var errors = $.parseJSON(error.responseText); 
+                        $.each(errors['errors'], function(key, val) { 
+                            $("#" + key +"_error").text(val[0]);
+                        });
+                    } 
                 }
             })
         })
