@@ -31,7 +31,11 @@ class ProductService
                 "products_id" => $product->id,
             ]);
         }
-
+        if ($product instanceof Product) {
+            toastr()->success('Product Added Successfully!');
+        } else {
+            toastr()->error('Something went wrong. ');
+        }
         return redirect()->route('products.index')->with('message', 'Product Added Successfully!. ');
     }
 
@@ -43,9 +47,8 @@ class ProductService
         $product->qty = $request->qty;
         $product->status = $request->status;
         $product->save();
-
-
-        if (isset($request->files)) {
+       
+        if (!is_null($request->files->get('files'))) {
 
             foreach ($request->files->get('files') as $img_id => $file) {
 
@@ -61,6 +64,18 @@ class ProductService
                         "path" => "upload" . "/" . $fileName,
                     ]);
                 }
+            }
+            if ($product instanceof Product) {
+                toastr()->success('Product Update Successfully!');
+            } else {
+                toastr()->error('Something went wrong. ');
+            }
+            return redirect()->route('products.index')->with('message', 'Updated Successfully!');
+        } else {
+            if ($product instanceof Product) {
+                toastr()->success('Product Update Successfully!');
+            } else {
+                toastr()->error('Something went wrong. ');
             }
             return redirect()->route('products.index')->with('message', 'Updated Successfully!');
         }

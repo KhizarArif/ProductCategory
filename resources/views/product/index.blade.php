@@ -1,9 +1,8 @@
 <x-guests>
     <div class="continer mt-5">
-        <div class="row justify-content-center">
 
-            <div class="col-md-6">
-
+        <div class="row justify-content-center"> 
+            <div class="col-md-6"> 
                 <div class="table-responsive">
                     <div class="justify-content-between">
                         <h2> Product Table </h2>
@@ -47,6 +46,11 @@
                                 </td>
                                 <td>
                                     <a href="{{route('products.edit', $product->id)}}"> <button class="btn btn-primary"> Edit </button> </a>
+                                    <form action="{{route('products.delete', $product->id)}}" method="post" class="delete-form">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach
@@ -61,5 +65,7 @@
         </div>
 
     </div>
+
+
 
 </x-guests>

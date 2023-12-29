@@ -34,6 +34,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        
         return $this->productService->store($request);
     }
 
@@ -48,11 +49,21 @@ class ProductController extends Controller
         return $this->productService->update($request, $id);
     }
 
+    public function destroy($id)
+    { 
+        $product = Product::find($id)->delete(); 
+        if ($product instanceof Product) {
+            toastr()->success('Data has been saved successfully!');
+
+            return redirect()->route('posts.index');
+        }
+ 
+        return redirect()->back()->with("success", "User Deleted Successfully!");
+    }
+
     public function GetSubcategory(Request $request)
     {
         $subcategories = Subcategory::where('cat_id', $request->id)->get();
         return response()->json($subcategories);
     }
-
-
 }
